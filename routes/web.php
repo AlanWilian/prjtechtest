@@ -12,5 +12,9 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+   return view('index');
 });
+
+
+Route::get('/search', 'YoutubeApiController@indexView');
+//Route::post('/search', 'YoutubeApiController@printlist');
