@@ -25,7 +25,7 @@ class YoutubeApiController extends Controller
 		
 		try{
 			$request_arr = $request->all();
-
+			
             $url = CyoutubeApi::buildUrl($request_arr);     
             $arr_curl = CyoutubeApi::verifyCurl($url);  
         
@@ -35,10 +35,10 @@ class YoutubeApiController extends Controller
 			});
 			
         }catch(Exception $e){
-			return response()->json(['message' => $e->getMessage()]);
+			return json_encode(['erro'=>true, 'message' => $e->getMessage()]);
 		}
 
-		return response()->json($result_colletion); 
+		return json_encode(['erro'=>false,'message' => $result_colletion]); 
     }
 
     

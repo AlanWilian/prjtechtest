@@ -6,10 +6,10 @@
     <div class="card-body">
         <h5 class="card-title">Records found</h5>
 
-        <table class="table table-hover table-striped" id="tabelaProdutos">
+        <table class="table table-hover table-striped" id="resultsTable">
             <thead>
                 <tr>
-                    <th>video</th>
+                    <th>Video</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,11 +49,14 @@
                         <label for="quantidadeProduto" class="control-label">Order</label>
                         <div class="input-group">                      
 								<select name="order" class="form-control" required id="order_id">
-									<option value="" selected="selected">--SELECT ORDER--</option>
-									<option value="date">Date</option>
-									<option value="rating">Rating</option>
-									<option value="relevance">Relevance</option>
-									<option value="viewCount">ViewCount</option>
+                                    <option value="" selected="selected">--SELECT ORDER--</option>
+                                    <option value="relevance">Relevance</option>
+                                    <option value="date">Date</option>
+                                    <option value="viewCount  ">ViewCount</option>
+									<option value="rating">Rating</option>									
+                                    {{-- <option value="title ">Title</option>
+                                    <option value="videoCount ">Video Count</option> --}}
+                                    
 								</select>	
 						</div>
                     </div>                    
@@ -76,10 +79,12 @@
 <script type="text/javascript">   
     
     function newSearching() {
+        $("#resultsTable").load("search #resultsTable");
         $('#keyword_id').val('');
         $('#maxResults_id').val('');
         $('#order_id').val('');
         $('#dlgProdutos').modal('show');
+        
     }
     
     function buildGrid(tableLine) {
@@ -99,13 +104,13 @@
             order: $("#order_id").val()
         };
         $.post("/api/search", parameters, function(data) { 
-            var dataReturn = JSON.parse(data);
-            if (dataReturn.status == 'erro') {
-                alert(data.message);
-                return;
-            }                
-            line = buildGrid(dataReturn);
-            $('#tabelaProdutos>tbody').append(tableLine);           
+            var dataReturn = JSON.parse(data);        
+            if (dataReturn.erro) {
+                 alert(dataReturn.message);
+                 return;
+            }
+            tableLine = buildGrid(dataReturn.message);
+            $('#resultsTable>tbody').append(tableLine);           
         });
         
     }    
@@ -115,6 +120,7 @@
         creatSearch();            
         $("#dlgProdutos").modal('hide');
     });   
+
 </script>
 @endsection
      
